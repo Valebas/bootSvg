@@ -1,0 +1,109 @@
+@mixin font-face($font-family, $file-path, $weight: normal, $style: normal, $asset-pipeline: false) {
+  @font-face {
+    font-family: $font-family;
+    font-weight: $weight;
+    font-style: $style;
+    @if $asset-pipeline == true {
+      src: font-url("#{$file-path}.eot");
+      src: font-url("#{$file-path}.eot?#iefix") format("embedded-opentype"), font-url("#{$file-path}.woff") format("woff"), font-url("#{$file-path}.ttf") format("truetype");
+    }
+    @else {
+      src: url("#{$file-path}.eot");
+      src: url("#{$file-path}.eot?#iefix") format("embedded-opentype"), url("#{$file-path}.woff") format("woff"), url("#{$file-path}.ttf") format("truetype");
+    }
+  }
+}
+
+// Для %placeholders в сниппете @include
+
+$mixin-xs: 320px;
+$mixin-sm: 576px;
+$mixin-md: 768px;
+$mixin-lg: 992px;
+$mixin-xl: 1200px;
+
+@mixin md($size, $type: min, $pixels: $mixin-xs) {
+  @if $size == 'xs' {
+    @media screen and ($type + -width: $mixin-xs) {
+        @content;
+    }
+  }
+  @else if $size == 'sm' {
+    @media screen and ($type + -width: $mixin-sm) {
+        @content;
+    }
+  }
+  @else if $size == 'md' {
+    @media screen and ($type + -width: $mixin-md) {
+        @content;
+    }
+  }
+ @else if $size == 'lg' {
+    @media screen and ($type + -width: $mixin-lg) {
+        @content;
+    }
+  }
+  @else if $size == 'xl' {
+    @media screen and ($type + -width: $mixin-xl) {
+     @content;
+    }
+  }
+  @else {
+    @content;
+  }
+}
+
+// Ретина
+// Образец применения есть в scss slider bgi 1t/1w.
+// Для одного изображения без версий -md, -xl
+@mixin retina-bgi-one($file, $type, ) {
+  background: url($file + '.' + $type);
+  background-size: cover;
+  @media (-webkit-min-device-pixel-ratio: 1.25),
+         (min-resolution: 120dpi)
+  	{
+      background: url($file + '@2x.' + $type);
+      background-size: cover;
+  	}
+}
+
+// Ретина
+// Образец применения есть в scss slider bgi 2t/2w
+// Включает версии -md, -xl
+@mixin retina-bgi-multi($file, $type, ) {
+  background: url($file + '.' + $type);
+  background-size: cover;
+  @media (-webkit-min-device-pixel-ratio: 1.25),
+         (min-resolution: 120dpi)
+  	{
+      background: url($file + '@2x.' + $type);
+      background-size: cover;
+  	}
+  @media ($md) {
+    background: url($file + '-md' + '.' + $type);
+    background-size: cover;
+    @media (-webkit-min-device-pixel-ratio: 1.25),
+           (min-resolution: 120dpi)
+      {
+        background: url($file + '-md' + '@2x.' + $type);
+        background-size: cover;
+      }
+  }
+  @media ($xl) {
+    background: url($file + '-xl' + '.' + $type);
+    background-size: cover;
+    @media (-webkit-min-device-pixel-ratio: 1.25),
+           (min-resolution: 120dpi)
+      {
+        background: url($file + '-xl' + '@2x.' + $type);
+        background-size: cover;
+      }
+  }
+}
+
+// Шрифт
+// Fonts. Тоже самое только с REM вместо EM
+$browser-context: 16; // Default не менять
+@function rem($pixels, $context: $browser-context) {
+  @return #{$pixels/$context}rem;
+}
