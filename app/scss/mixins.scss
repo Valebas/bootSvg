@@ -14,37 +14,59 @@
   }
 }
 
-// Для %placeholders в сниппете @include
+//Вычисляет подходящий процент под заданную, в vars, ширину контента в миксине container
+@function width($breakpoint, $content) {
+  $coefficient: $breakpoint / $content;
+  $result: 100% / $coefficient;
+  @return $result;
+}
 
-$mixin-xs: 320px;
-$mixin-sm: 576px;
-$mixin-md: 768px;
-$mixin-lg: 992px;
-$mixin-xl: 1200px;
+// По сокращению "in" позволяет использовать конкретный медиа запрос без необходимости разворачивать все
+// По сокращению "inc" развернет все медиа запросы
 
-@mixin md($size, $type: min, $pixels: $mixin-xs) {
-  @if $size == 'xs' {
-    @media screen and ($type + -width: $mixin-xs) {
+@mixin md($size, $type: min, $pixels: $mob-xs) {
+  @if $size == 'breakpoint-mob-xs' {
+    @media screen and ($type + -width: $mob-xs) {
         @content;
     }
   }
-  @else if $size == 'sm' {
-    @media screen and ($type + -width: $mixin-sm) {
+  @if $size == 'breakpoint-mob-s' {
+    @media screen and ($type + -width: $mob-s) {
         @content;
     }
   }
-  @else if $size == 'md' {
-    @media screen and ($type + -width: $mixin-md) {
+  @if $size == 'breakpoint-mob-m' {
+    @media screen and ($type + -width: $mob-m) {
         @content;
     }
   }
- @else if $size == 'lg' {
-    @media screen and ($type + -width: $mixin-lg) {
+  @else if $size == 'breakpoint-mob-landscape' {
+    @media screen and ($type + -width: $mob-landscape) {
         @content;
     }
   }
-  @else if $size == 'xl' {
-    @media screen and ($type + -width: $mixin-xl) {
+  @else if $size == 'breakpoint-tablet-sm' {
+    @media screen and ($type + -width: $tablet-sm) {
+        @content;
+    }
+  }
+ @else if $size == 'breakpoint-tablet-md' {
+    @media screen and ($type + -width: $tablet-md) {
+        @content;
+    }
+  }
+  @else if $size == 'breakpoint-laptop-lg' {
+    @media screen and ($type + -width: $laptop-lg) {
+     @content;
+    }
+  }
+  @else if $size == 'breakpoint-desktop-xl' {
+    @media screen and ($type + -width: $desktop-xl) {
+     @content;
+    }
+  }
+  @else if $size == 'breakpoint-tv-xxl' {
+    @media screen and ($type + -width: $tv-xxl) {
      @content;
     }
   }
